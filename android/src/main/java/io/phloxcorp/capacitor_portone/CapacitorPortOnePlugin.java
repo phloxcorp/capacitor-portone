@@ -19,4 +19,34 @@ public class CapacitorPortOnePlugin extends Plugin {
         ret.put("value", implementation.echo(value));
         call.resolve(ret);
     }
+
+    @PluginMethod
+    public void requestIdentityVerification(PluginCall call) {
+        String storeId = call.getString("storeId");
+        String identityVerificationId = call.getString("identityVerificationId");
+        String channelKey = call.getString("channelKey");
+
+        if (storeId == null || storeId.isEmpty()) {
+            call.reject("storeId is required");
+            return;
+        }
+
+        if (identityVerificationId == null || identityVerificationId.isEmpty()) {
+            call.reject("identityVerificationId is required");
+            return;
+        }
+
+        if (channelKey == null || channelKey.isEmpty()) {
+            call.reject("channelKey is required");
+            return;
+        }
+
+        implementation.requestIdentityVerification(
+            getActivity(),
+            storeId,
+            identityVerificationId,
+            channelKey,
+            call
+        );
+    }
 }
