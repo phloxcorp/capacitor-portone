@@ -13,9 +13,58 @@ npx cap sync
 
 ### Android
 
-Make sure your app's `MainActivity` extends `ComponentActivity` (which it should by default in Capacitor apps).
+#### 1. Add JitPack Repository
 
-The plugin automatically includes the PortOne Android SDK. No additional configuration needed.
+Add JitPack repository to your project. Open `android/settings.gradle`:
+
+```gradle
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }  // Add this line
+    }
+}
+```
+
+Or if using older Gradle setup, add to `android/build.gradle`:
+
+```gradle
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }  // Add this line
+    }
+}
+```
+
+#### 2. Enable Core Library Desugaring
+
+Add to your app's `android/app/build.gradle`:
+
+```gradle
+android {
+    // ... other configurations ...
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true  // Add this line
+    }
+}
+
+dependencies {
+    // ... other dependencies ...
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'  // Add this line
+}
+```
+
+#### 3. MainActivity
+
+Make sure your app's `MainActivity` extends `ComponentActivity` (which it should by default in Capacitor apps).
 
 ## Usage
 

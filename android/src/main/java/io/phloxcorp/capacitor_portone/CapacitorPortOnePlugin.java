@@ -11,6 +11,13 @@ public class CapacitorPortOnePlugin extends Plugin {
 
     private CapacitorPortOne implementation = new CapacitorPortOne();
 
+    @Override
+    public void load() {
+        super.load();
+        // Initialize the launcher when plugin is loaded (before Activity is STARTED)
+        implementation.initialize(getActivity());
+    }
+
     @PluginMethod
     public void echo(PluginCall call) {
         String value = call.getString("value");
@@ -42,7 +49,6 @@ public class CapacitorPortOnePlugin extends Plugin {
         }
 
         implementation.requestIdentityVerification(
-            getActivity(),
             storeId,
             identityVerificationId,
             channelKey,

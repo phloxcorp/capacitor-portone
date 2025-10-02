@@ -22,89 +22,105 @@ public class CapacitorPortOne {
 
     private ActivityResultLauncher<Intent> identityVerificationLauncher;
     private PluginCall savedCall;
+    private ComponentActivity componentActivity;
 
     public String echo(String value) {
         Logger.info("Echo", value);
         return value;
     }
 
+    public void initialize(Activity activity) {
+        try {
+            // Ensure we have a ComponentActivity
+            if (!(activity instanceof ComponentActivity)) {
+                Logger.warn("CapacitorPortOne", "Activity must be a ComponentActivity");
+                return;
+            }
+
+            componentActivity = (ComponentActivity) activity;
+
+            // Register the activity result launcher during initialization
+            // This must happen before the Activity is STARTED
+            identityVerificationLauncher = PortOne.INSTANCE.registerForIdentityVerificationActivity(
+                componentActivity,
+                new IdentityVerificationCallback() {
+                    @Override
+                    public void onSuccess(IdentityVerificationResponse.Success response) {
+                        try {
+                            JSObject ret = new JSObject();
+                            ret.put("success", true);
+                            ret.put("identityVerificationId", response.getIdentityVerificationId());
+
+                            // Add additional response data if available
+                            String responseJson = response.toString();
+                            ret.put("data", responseJson);
+
+                            if (savedCall != null) {
+                                savedCall.resolve(ret);
+                                savedCall = null;
+                            }
+                        } catch (Exception e) {
+                            Logger.error("CapacitorPortOne", "Error processing success response", e);
+                            if (savedCall != null) {
+                                savedCall.reject("Error processing response: " + e.getMessage());
+                                savedCall = null;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFail(IdentityVerificationResponse.Fail response) {
+                        try {
+                            JSObject ret = new JSObject();
+                            ret.put("success", false);
+                            ret.put("code", response.getCode());
+                            ret.put("message", response.getMessage());
+
+                            // Add additional error data if available
+                            String responseJson = response.toString();
+                            ret.put("data", responseJson);
+
+                            if (savedCall != null) {
+                                savedCall.resolve(ret);
+                                savedCall = null;
+                            }
+                        } catch (Exception e) {
+                            Logger.error("CapacitorPortOne", "Error processing fail response", e);
+                            if (savedCall != null) {
+                                savedCall.reject("Error processing response: " + e.getMessage());
+                                savedCall = null;
+                            }
+                        }
+                    }
+                }
+            );
+
+            Logger.info("CapacitorPortOne", "Identity verification launcher initialized successfully");
+        } catch (Exception e) {
+            Logger.error("CapacitorPortOne", "Error initializing identity verification launcher", e);
+        }
+    }
+
     public void requestIdentityVerification(
-        Activity activity,
         String storeId,
         String identityVerificationId,
         String channelKey,
         PluginCall call
     ) {
         try {
-            // Ensure we have a ComponentActivity
-            if (!(activity instanceof ComponentActivity)) {
-                call.reject("Activity must be a ComponentActivity");
+            if (identityVerificationLauncher == null) {
+                call.reject("Plugin not properly initialized. Please restart the app.");
                 return;
             }
 
-            ComponentActivity componentActivity = (ComponentActivity) activity;
+            if (componentActivity == null) {
+                call.reject("Activity is not available");
+                return;
+            }
+
             savedCall = call;
 
-            // Create callback for identity verification
-            IdentityVerificationCallback callback = new IdentityVerificationCallback() {
-                @Override
-                public void onSuccess(IdentityVerificationResponse.Success response) {
-                    try {
-                        JSObject ret = new JSObject();
-                        ret.put("success", true);
-                        ret.put("identityVerificationId", response.getIdentityVerificationId());
-
-                        // Add additional response data if available
-                        String responseJson = response.toString();
-                        ret.put("data", responseJson);
-
-                        if (savedCall != null) {
-                            savedCall.resolve(ret);
-                            savedCall = null;
-                        }
-                    } catch (Exception e) {
-                        Logger.error("CapacitorPortOne", "Error processing success response", e);
-                        if (savedCall != null) {
-                            savedCall.reject("Error processing response: " + e.getMessage());
-                            savedCall = null;
-                        }
-                    }
-                }
-
-                @Override
-                public void onFail(IdentityVerificationResponse.Fail response) {
-                    try {
-                        JSObject ret = new JSObject();
-                        ret.put("success", false);
-                        ret.put("code", response.getCode());
-                        ret.put("message", response.getMessage());
-
-                        // Add additional error data if available
-                        String responseJson = response.toString();
-                        ret.put("data", responseJson);
-
-                        if (savedCall != null) {
-                            savedCall.resolve(ret);
-                            savedCall = null;
-                        }
-                    } catch (Exception e) {
-                        Logger.error("CapacitorPortOne", "Error processing fail response", e);
-                        if (savedCall != null) {
-                            savedCall.reject("Error processing response: " + e.getMessage());
-                            savedCall = null;
-                        }
-                    }
-                }
-            };
-
-            // Register the activity result launcher
-            identityVerificationLauncher = PortOne.INSTANCE.registerForIdentityVerificationActivity(
-                componentActivity,
-                callback
-            );
-
             // Create the request with all parameters
-            // Note: Using Java constructor with positional parameters
             IdentityVerificationRequest request = new IdentityVerificationRequest(
                 storeId,
                 identityVerificationId,
