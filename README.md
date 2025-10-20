@@ -1,6 +1,6 @@
 # capacitor-portone
 
-Capacitor plugin for PortOne (formerly iamport) identity verification on Android.
+Capacitor plugin for PortOne (formerly iamport) identity verification on Android and iOS.
 
 ## Install
 
@@ -66,6 +66,10 @@ dependencies {
 
 Make sure your app's `MainActivity` extends `ComponentActivity` (which it should by default in Capacitor apps).
 
+### iOS
+
+No additional configuration required for identity verification. The plugin will work out of the box.
+
 ## Usage
 
 ```typescript
@@ -93,7 +97,7 @@ async function verifyIdentity() {
 ## Platform Support
 
 - ✅ Android
-- ❌ iOS (not yet implemented)
+- ✅ iOS
 - ❌ Web (use PortOne JavaScript SDK directly)
 
 ## API
