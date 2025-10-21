@@ -68,30 +68,17 @@ Make sure your app's `MainActivity` extends `ComponentActivity` (which it should
 
 ### iOS
 
-#### Add PortOne iOS SDK
+#### Required: Add PortOne iOS SDK
 
-The PortOne iOS SDK is not available via CocoaPods, so you need to add it as a Swift Package dependency to your Xcode project:
+This plugin depends on the PortOne iOS SDK, which must be added manually to your Xcode project:
 
-1. Open your iOS app project in Xcode
-2. Select your project in the Project Navigator
-3. Select your app target
-4. Go to the **General** tab
-5. Scroll down to **Frameworks, Libraries, and Embedded Content**
-6. Click the **+** button
-7. Click **Add Package Dependency...**
-8. Enter the package URL: `https://github.com/portone-io/ios-sdk.git`
-9. Click **Add Package**
-10. Select **PortOneSdk** and click **Add Package**
+1. Open your iOS app in Xcode
+2. Go to **File → Add Package Dependencies**
+3. Enter the package URL: `https://github.com/portone-io/ios-sdk.git`
+4. Select version `0.0.10` or later
+5. Click **Add Package**
 
-Alternatively, if your project uses `Package.swift`, add the dependency:
-
-```swift
-dependencies: [
-    .package(url: "https://github.com/portone-io/ios-sdk.git", from: "0.0.10")
-]
-```
-
-> **Note**: This is a one-time setup required because the PortOne iOS SDK only supports Swift Package Manager and is not available via CocoaPods.
+> **Note:** The PortOne iOS SDK only supports Swift Package Manager. Even if your project uses CocoaPods, you can add individual Swift packages through Xcode.
 
 ## Usage
 
