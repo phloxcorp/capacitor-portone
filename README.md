@@ -68,17 +68,28 @@ Make sure your app's `MainActivity` extends `ComponentActivity` (which it should
 
 ### iOS
 
-#### Required: Add PortOne iOS SDK
+#### Requirements
 
-This plugin depends on the PortOne iOS SDK, which must be added manually to your Xcode project:
+This plugin requires **Swift Package Manager (SPM)**. CocoaPods is not supported because the underlying PortOne iOS SDK only supports SPM.
 
-1. Open your iOS app in Xcode
-2. Go to **File → Add Package Dependencies**
-3. Enter the package URL: `https://github.com/portone-io/ios-sdk.git`
-4. Select version `0.0.10` or later
-5. Click **Add Package**
+If your project uses CocoaPods, you need to migrate to SPM or use a hybrid approach:
 
-> **Note:** The PortOne iOS SDK only supports Swift Package Manager. Even if your project uses CocoaPods, you can add individual Swift packages through Xcode.
+**Option 1: Migrate to SPM (Recommended)**
+```bash
+# For Capacitor 7+
+npx cap spm-migration-assistant
+
+Option 2: Hybrid Setup
+
+If you must keep CocoaPods, you can manually add the PortOne SDK via SPM in Xcode:
+1. Open your .xcworkspace file in Xcode
+2. File > Add Package Dependencies...
+3. Add: https://github.com/portone-io/ios-sdk.git
+4. Select version 0.1.3 or later
+
+Configuration
+
+No additional configuration required after SPM setup. The plugin will work out of the box.
 
 ## Usage
 
