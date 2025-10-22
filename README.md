@@ -1,6 +1,6 @@
 # capacitor-portone
 
-Capacitor plugin for PortOne (formerly iamport) identity verification on Android and iOS.
+Capacitor plugin for PortOne (formerly iamport) identity verification on Android, iOS, and Web.
 
 ## Install
 
@@ -101,11 +101,14 @@ async function verifyIdentity() {
     const result = await CapacitorPortOne.requestIdentityVerification({
       storeId: 'your-store-id',
       identityVerificationId: 'unique-verification-id',
-      channelKey: 'your-channel-key'
+      channelKey: 'your-channel-key',
+      // Optional: redirectUrl is recommended for web platform
+      redirectUrl: `${window.location.origin}/verification-complete`
     });
 
     if (result.success) {
       console.log('Verification successful:', result.identityVerificationId);
+      // Send identityVerificationId to your server for verification
     } else {
       console.error('Verification failed:', result.code, result.message);
     }
@@ -115,11 +118,18 @@ async function verifyIdentity() {
 }
 ```
 
+### Web Platform Notes
+
+The plugin uses `@portone/browser-sdk` for web platform support. The SDK is automatically installed as a dependency.
+
+- **redirectUrl**: While optional in the API, it's recommended for web platforms, especially on mobile browsers where redirect mode is commonly used.
+- **Server-side verification**: After successful verification, send the `identityVerificationId` to your server to verify the authentication status using PortOne's REST API.
+
 ## Platform Support
 
 - ✅ Android
 - ✅ iOS
-- ❌ Web (use PortOne JavaScript SDK directly)
+- ✅ Web
 
 ## API
 
