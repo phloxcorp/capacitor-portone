@@ -207,6 +207,6 @@ Request identity verification using PortOne
 
 #### IdentityVerificationRequest
 
-<code>{ storeId: string; identityVerificationId: string; channelKey?: string; pgProvider?: Entity.PgProvider; isTestChannel?: boolean; customer?: Entity.Customer; windowType?: Entity.WindowTypes; redirectUrl?: string; customData?: string; bypass?: Entity.IdentityVerificationBypass; }</code>
+<code>{ storeId: string; identityVerificationId: string; channelKey?: string; pgProvider?: Entity.PgProvider; isTestChannel?: boolean; customer?: Entity.Customer; windowType?: Entity.WindowTypes; redirectUrl?: string; customData?: string; bypass?: Entity.IdentityVerificationBypass; popup?: Entity.Popup; iframe?: Entity.Iframe; }</code>
 
 </docgen-api>

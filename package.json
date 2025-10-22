@@ -65,7 +65,7 @@
     "@capacitor/core": ">=7.0.0"
   },
   "dependencies": {
-    "@portone/browser-sdk": "^0.0.11"
+    "@portone/browser-sdk": "^0.0.23"
   },
   "prettier": "@ionic/prettier-config",
   "swiftlint": "@ionic/swiftlint-config",
