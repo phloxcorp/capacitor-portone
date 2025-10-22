@@ -194,6 +194,7 @@ Request identity verification using PortOne
 | **`storeId`**                | <code>string</code> |
 | **`identityVerificationId`** | <code>string</code> |
 | **`channelKey`**             | <code>string</code> |
+| **`redirectUrl`**            | <code>string</code> |
 
 
 ### Type Aliases
@@ -202,5 +203,10 @@ Request identity verification using PortOne
 #### IdentityVerificationResponse
 
 <code><a href="#identityverificationsuccessresponse">IdentityVerificationSuccessResponse</a> | <a href="#identityverificationfailresponse">IdentityVerificationFailResponse</a></code>
+
+
+#### IdentityVerificationRequest
+
+<code>{ storeId: string; identityVerificationId: string; channelKey?: string; pgProvider?: Entity.PgProvider; isTestChannel?: boolean; customer?: Entity.Customer; windowType?: Entity.WindowTypes; redirectUrl?: string; customData?: string; bypass?: Entity.IdentityVerificationBypass; popup?: Entity.Popup; iframe?: Entity.Iframe; }</code>
 
 </docgen-api>

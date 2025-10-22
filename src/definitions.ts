@@ -2,6 +2,7 @@ export interface IdentityVerificationRequest {
   storeId: string;
   identityVerificationId: string;
   channelKey: string;
+  redirectUrl?: string;
 }
 
 export interface IdentityVerificationSuccessResponse {
