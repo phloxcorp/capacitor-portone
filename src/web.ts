@@ -1,4 +1,5 @@
 import { WebPlugin } from '@capacitor/core';
+import * as PortOne from '@portone/browser-sdk/v2';
 
 import type {
   CapacitorPortOnePlugin,
@@ -16,16 +17,47 @@ export class CapacitorPortOneWeb
   }
 
   async requestIdentityVerification(
-    _request: IdentityVerificationRequest,
+    request: IdentityVerificationRequest,
   ): Promise<IdentityVerificationResponse> {
-    console.warn(
-      'requestIdentityVerification is not available on web.',
-      'Please use the PortOne JavaScript SDK directly for web implementations.',
-      'See: https://developers.portone.io/'
-    );
+    try {
+      const response = await PortOne.requestIdentityVerification({
+        storeId: request.storeId,
+        identityVerificationId: request.identityVerificationId,
+        channelKey: request.channelKey,
+        redirectUrl: request.redirectUrl,
+      });
 
-    throw new Error(
-      'Identity verification is not supported on web platform. Use the PortOne JavaScript SDK directly. ' + _request
-    );
+      // Check if response is null or undefined
+      if (!response) {
+        return {
+          success: false,
+          code: 'VERIFICATION_CANCELLED',
+          message: 'Identity verification was cancelled by user',
+        };
+      }
+
+      // Check if there's an error code in the response
+      if (response.code !== undefined) {
+        return {
+          success: false,
+          code: response.code,
+          message: response.message || 'Identity verification failed',
+          ...response,
+        };
+      }
+
+      // Success case
+      return {
+        success: true,
+        ...response,
+        identityVerificationId: request.identityVerificationId,
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        code: 'VERIFICATION_ERROR',
+        message: error?.message || 'An unexpected error occurred during identity verification',
+      };
+    }
   }
 }

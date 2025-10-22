@@ -7,6 +7,7 @@ export default {
       name: 'capacitorCapacitorPortOne',
       globals: {
         '@capacitor/core': 'capacitorExports',
+        '@portone/browser-sdk/v2': 'PortOne',
       },
       sourcemap: true,
       inlineDynamicImports: true,
@@ -18,5 +19,5 @@ export default {
       inlineDynamicImports: true,
     },
   ],
-  external: ['@capacitor/core'],
+  external: ['@capacitor/core', '@portone/browser-sdk/v2'],
 };
