@@ -12,7 +12,7 @@
     "dist/",
     "ios/Sources",
     "ios/Tests",
-    "Package.swift"
+    "CapacitorPortone.podspec"
   ],
   "author": "",
   "license": "MIT",
