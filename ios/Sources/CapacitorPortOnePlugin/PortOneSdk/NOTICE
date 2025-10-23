@@ -1,0 +1,17 @@
+PortOne iOS SDK
+Copyright (c) 2024 PortOne
+
+This directory contains source code from the PortOne iOS SDK:
+https://github.com/portone-io/ios-sdk
+
+The code is licensed under dual license:
+- Apache License 2.0 (see LICENSE-APACHE)
+- MIT License (see LICENSE-MIT)
+
+You may choose either license to govern your use of this software.
+
+The following files are included from the PortOne iOS SDK:
+- IdentityVerificationResult.swift
+- IdentityVerificationViewController.swift
+- IdentityVerificationWebView.swift
+- WebViewAlertDelegate.swift
