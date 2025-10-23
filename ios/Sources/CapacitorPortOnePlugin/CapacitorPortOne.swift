@@ -1,6 +1,5 @@
 import Foundation
 import UIKit
-import PortOneSdk
 
 @objc public class CapacitorPortOne: NSObject {
     @objc public func echo(_ value: String) -> String {
